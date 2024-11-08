@@ -1,4 +1,4 @@
-#include <iostream>
+ #include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
@@ -44,7 +44,9 @@ int main() {
 
         switch (choice) {
             case 1:
-                addPatient(patients);
+            
+
+    addPatient(patients);
                 break;
             case 2:
                 displayPatients(patients);
@@ -71,6 +73,7 @@ int main() {
     return 0;
 }
 
+
 void addPatient(vector<Patient>& patients) {
     Patient newPatient;
     cout << "\nEnter Patient Details:\n";
@@ -93,9 +96,12 @@ void addPatient(vector<Patient>& patients) {
     newPatient.isDischarged = false;
     newPatient.dischargeDate = "";
 
-    patients.push_back(newPatient);
+    
+
+patients.push_back(newPatient);
     cout << "Patient added successfully!\n";
 }
+
 
 void displayPatients(const vector<Patient>& patients) {
     if (patients.empty()) {
@@ -130,6 +136,7 @@ void displayPatients(const vector<Patient>& patients) {
     cout << "-------------------------------------------------------------------------------------\n";
 }
 
+
 void searchPatient(const vector<Patient>& patients) {
     string searchName;
     cout << "Enter patient name to search: ";
@@ -139,7 +146,10 @@ void searchPatient(const vector<Patient>& patients) {
     bool found = false;
     for (const auto& patient : patients) {
         if (patient.name == searchName) {
-            cout << "\nPatient Found:\n";
+            
+
+
+cout << "\nPatient Found:\n";
             cout << "-------------------------------------------------------------------------------------\n";
             cout << left << setw(15) << "Name" 
                  << setw(5) << "Age" 
@@ -171,6 +181,7 @@ void searchPatient(const vector<Patient>& patients) {
     }
 }
 
+
 void updatePatient(vector<Patient>& patients) {
     string updateName;
     cout << "Enter patient name to update: ";
@@ -186,8 +197,10 @@ void updatePatient(vector<Patient>& patients) {
             if (!updateName.empty()) {
                 patient.name = updateName;
             }
+      
 
-            cout << "Age (leave blank to keep current): ";
+
+      cout << "Age (leave blank to keep current): ";
             string ageInput;
             getline(cin, ageInput);
             if (!ageInput.empty()) {
@@ -234,6 +247,10 @@ void updatePatient(vector<Patient>& patients) {
     }
 }
 
+
+
+
+
 void dischargePatient(vector<Patient>& patients) {
     string dischargeName;
     cout << "Enter patient name to discharge: ";
@@ -261,6 +278,7 @@ void dischargePatient(vector<Patient>& patients) {
     }
 }
 
+
 void savePatientsToFile(const vector<Patient>& patients, const string& filename) {
     ofstream outfile(filename);
     if (outfile.is_open()) {
@@ -282,9 +300,60 @@ void savePatientsToFile(const vector<Patient>& patients, const string& filename)
     }
 }
 
+
 vector<Patient> loadPatientsFromFile(const string& filename) {
     vector<Patient> patients;
     ifstream infile(filename);
     if (infile.is_open()) {
         string line;
-        while
+        while (getline(infile, line)) {
+            Patient patient;
+            size_t pos = 0;
+            string token;
+
+            pos = line.find(',');
+            patient.name = line.substr(0, pos);
+            line = line.substr(pos + 1);
+
+            pos = line.find(',');
+            patient.age = stoi(line.substr(0, pos));
+            line = line.substr(pos + 1);
+
+            pos = line.find(',');
+            patient.gender = line.substr(0, pos);
+            line = line.substr(pos + 1);
+
+            pos = line.find(',');
+            patient.address = line.substr(0, pos);
+            line = line.substr(pos + 1);
+
+            pos = line.find(',');
+            patient.disease = line.substr(0, pos);
+            line = line.substr(pos + 1);
+
+            pos = line.find(',');
+            patient.doctor = line.substr(0, pos);
+            line = line.substr(pos + 1);
+
+            pos = line.find(',');
+            patient.admissionDate = line.substr(0, pos);
+            line = line.substr(pos + 1);
+
+            pos = line.find(',');
+            patient.dischargeDate = line.substr(0, pos);
+            line = line.substr(pos + 1);
+
+            patient.isDischarged = (line == "1");
+
+            patients.push_back(patient);
+        }
+        infile.close();
+        cout << "Patient data loaded from file.\n";
+    } else {
+     
+
+
+   cout << "Error opening file for loading.\n";
+    }
+    return patients;
+}
